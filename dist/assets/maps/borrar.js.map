@@ -1,0 +1,1 @@
+{"version":3,"names":[],"mappings":"","sources":["borrar.js"],"sourcesContent":["function borrar(){\n\tvar borrar = \"Lucas\";\n\talert(borrar);\n\tvar borrar += borrar;\n\tvar num = 23;\n\talert(num);\n}\n"],"file":"../js/borrar.js"}

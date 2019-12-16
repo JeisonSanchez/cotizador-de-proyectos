@@ -1,0 +1,52 @@
+/*----------------------------------------------------------------------------*
+	$BTN
+*----------------------------------------------------------------------------*/
+
+
+/* ^.o-btn
+-----------------------------------------------------------------------------*/
+
+// Boton por defecto
+.o-btn
+	btn()
+	display: inline-flex
+	align-items: center
+	height: 42px
+	padding: 0 25px
+	border-radius: 42px
+	border: 2px solid #35B4DB
+	background: darken($base2-color, 6)
+	font-size: 1.9rem
+	color: #3CD1FF
+	font-weight: $semi-bold
+	transition: all .3s ease
+
+	&:hover
+		background: #35B4DB
+		color: #fff
+
+
+.o-btn--v2
+	@extend .o-btn
+	border-color: #5A769F
+	color: #B9D1F4
+
+	&:hover
+		background: #5A769F
+		color: #fff
+
+
+.o-btn--full
+	@extends .o-btn
+	padding: 0 38px
+	border-radius: 5px
+	border: none
+	background: darken($base-color, 10%)
+	font-size: 1.6rem
+	color: #fff
+
+	&:hover
+		background: #33c2f7
+
+/* ^Fin - .o-btn
+-----------------------------------------------------------------------------*/

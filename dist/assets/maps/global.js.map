@@ -1,0 +1,1 @@
+{"version":3,"names":[],"mappings":"","sources":["global.js"],"sourcesContent":["\n\n//=require vendor/prueba.js\n\nvar nombre = \"Randy\";\n"],"file":"../js/global.js"}

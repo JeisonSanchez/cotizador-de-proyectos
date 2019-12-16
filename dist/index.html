@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="format-detection" content="telephone=no, email=no, address=no, date=no">
+    <title>Calcula cuánto cobrar por un proyecto</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="https://use.typekit.net/kra1kqk.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.2/css/bootstrap-slider.min.css">
+    <link rel="stylesheet" href="assets/css/global.b9373e41a1.css">
+</head>
+
+<body>
+    <section class="g-container c-block-1" id="app">
+        <header class="c-header">
+            <img class="c-header__logo" src="images/logo-nigma.png" alt="Logo Grupo Nigma">
+        </header>
+        <div class="c-block-1__container">
+            <article class="c-block-1__item--v2">
+                <h1 class="o-heading-normal-4 c-block-1__item-title">Calcula cuánto cobrar por un proyecto</h1>
+                <p class="c-block-1__text-intro">Antes de empezar definamos lo siguiente:</p>
+            </article>
+            <article class="c-block-1__item">
+                <h2 class="o-heading-normal-1-2 c-block-1__heading">De acuerdo a tus habilidades y años de experiencia ¿Cuánto crees que mereces ganar al mes?</h2>
+                <input id="sueldo" type="number" data-slider-min="500000" data-slider-max="7000000" data-slider-step="100000" :data-slider-value="sueldo">
+                <div class="c-block-1__price">{{ sueldo_paralelo | money }}</div>
+            </article>
+            <article class="c-block-1__item">
+                <h2 class="o-heading-normal-1-2 c-block-1__heading">Selecciona los días de la semana que trabajas</h2>
+                <ul class="c-list--v5">
+                    <li v-for="(dia, index) in dias">
+                        <div class="o-form-check">
+                            <input class="o-form-check__campo" :id="'check_dia-' + (index+1)" type="checkbox" name="complementos" v-model.number="dia.activo">
+                            <label :for="'check_dia-' + (index+1)"></label><span>{{ dia.dia }}</span>
+                        </div>
+                    </li>
+                </ul>
+            </article>
+            <article class="c-block-1__item">
+                <h2 class="o-heading-normal-1-2 c-block-1__heading">¿Cuántas horas trabajas al día?</h2>
+                <ul class="c-list--v5">
+                    <li>
+                        <div class="o-form-number"><span class="icon-minus-circle" @click="horas_dia--"></span>
+                            <input class="o-form-number__field" type="number" name="paginas_internas" min="1" max="50" v-model.number="horas_dia"><span class="icon-plus-circle" @click="horas_dia++"></span>
+                        </div>
+                    </li>
+                </ul>
+            </article>
+            <article class="c-block-1__item">
+                <h2 class="o-heading-normal-1-2 c-block-1__heading" style="margin-bottom:10px">¿Cuánto suman tus gastos al mes?</h2>
+                <p class="c-block-1__text-intro">Por ejemplo licencias de software, luz, agua, empanadas 😏, etc...</p>
+                <input id="gastos" type="number" data-slider-min="0" data-slider-max="5000000" data-slider-step="50000" :data-slider-value="gastos_mes">
+                <div class="c-block-1__price">{{ gastos_mes_paralelo | money }}</div>
+            </article>
+        </div>
+        <div class="c-block-1__container-2">
+            <div class="c-pedido js-pedido">
+                <h3 class="c-pedido__title">Resumen del proyecto</h3>
+                <p class="c-pedido__intro" v-if="!costo_total">Agrega actividades a tu proyecto</p>
+                <div class="c-pedido__content" v-else="costo_total">
+                    <table class="c-table-dark">
+                        <thead>
+                            <tr>
+                                <th class="padding">Actividad</th>
+                                <th class="c-table-dark__center" width="10%">Horas</th>
+                                <th class="c-table-dark__center" width="20%">Costo</th>
+                                <th width="10%"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(actividad, index) in activities">
+                                <td class="padding">{{ actividad.nombre }}</td>
+                                <td class="c-table-dark__center">{{ actividad.horas }}</td>
+                                <td class="c-table-dark__center">{{ actividad.precio | money }}</td>
+                                <td class="c-table-dark__center">
+                                    <a class="icon-bin" href="#." @click="borrarActividad(index, $event)"></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <form @submit.prevent="agregarActividad">
+                    <div class="c-pedido__add-actividad">
+                        <div class="c-pedido__col-1">
+                            <label class="o-label-dark">Actividad</label>
+                            <input class="o-form-field--dark" id="agregarActividad" type="text" placeholder="Escribe la actividad a realizar" required v-model="actividad">
+                        </div>
+                        <div class="c-pedido__col-2">
+                            <label class="o-label-dark">Horas</label>
+                            <input class="o-form-field--dark-center" type="number" value="1" required v-model.number="horas">
+                        </div>
+                        <div class="c-pedido__btn">
+                            <button class="o-btn--full">Agregar actividad</button>
+                        </div>
+                    </div>
+                </form>
+                <div class="c-pedido__costo icon-wallet" v-if="costo_total"><span class="c-pedido__text-1">El costo de tu proyecto es</span>
+                    <div class="c-pedido__total" id="costoTotal" :data-valor="costo_total">{{ costo_total | money }}</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Vendors-->
+    <script src="assets/js/vendor.9f2d6e9b7e.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.2/bootstrap-slider.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/vue.js"></script>
+    <!-- Scripts globales -->
+    <script src="assets/js/global.f993224724.js"></script>
+</body>
+
+</html>

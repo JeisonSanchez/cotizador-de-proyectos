@@ -1,0 +1,101 @@
+/*----------------------------------------------------------------------------*
+	$BREAKPOINTS
+	Contiene los puntos de interrupción y Media Queries
+*----------------------------------------------------------------------------*/
+
+/**
+ *
+ * == $breakpoints por defecto
+ * Se pueden modificar desde el archivo config
+ *
+ */
+$breakpoints ?= {
+	'xs' : 0,
+	's'  : 320px,
+	'm'  : 480px,
+	'l'  : 768px,
+	'xl' : 991px,
+	'hd' : 1199px
+}
+$bp_array   = keys($breakpoints)
+
+
+// Tamaños por defecto para movil, tablet y desktop
+$bp-movil   = $breakpoints['m']
+$bp-tablet  = $breakpoints['xl']
+$bp-desktop = $bp-tablet
+$bp-hd      = $breakpoints['hd']
+
+
+
+
+
+/* ^Media Queries
+-----------------------------------------------------------------------------*/
+
+// min-width
+min(bp)
+	if bp in $breakpoints
+		@media only screen and (min-width: $breakpoints[bp] + 1)
+			{block}
+	else
+		@media only screen and (min-width: bp)
+			{block}
+
+
+// max-width
+max(bp)
+	if bp in $breakpoints
+		@media only screen and (max-width: $breakpoints[bp])
+			{block}
+	else
+		@media only screen and (max-width: bp)
+			{block}
+
+
+// min-width and max-width
+between(bp1,bp2)
+	if bp1 in $breakpoints && bp2 in $breakpoints
+		if bp1 == bp2
+			$max = index($bp_array, bp1) - 1
+			$min = $bp_array[$max]
+			if $max == 0
+				@media only screen and (max-width: $breakpoints[bp1])
+					{block}
+			else
+				@media only screen and (min-width: $breakpoints[$min] + 1) and (max-width: $breakpoints[bp1])
+					{block}
+		else
+			@media only screen and (min-width: $breakpoints[bp1] + 1) and (max-width: $breakpoints[bp2])
+				{block}
+	else if bp1 in $breakpoints &&  !(bp2 in $breakpoints)
+		@media only screen and (min-width: $breakpoints[bp1] + 1) and (max-width: bp2)
+			{block}
+	else if !(bp1 in $breakpoints) &&  bp2 in $breakpoints
+		@media only screen and (min-width: bp1 + 1) and (max-width: $breakpoints[bp2])
+			{block}
+	else
+		@media only screen and (min-width: bp1 + 1) and (max-width: bp2)
+			{block}
+
+
+// min-width and max-width basado en un punto inicial
+at(bp)
+	+between(bp,bp)
+		{block}
+
+mobile()
+	+max($bp-movil)
+		{block}
+
+tablet()
+	+between($bp-movil, $bp-tablet)
+		{block}
+
+desktop()
+	+min($bp-desktop + 1)
+		{block}
+
+hd()
+	+min($bp-hd + 1)
+		{block}

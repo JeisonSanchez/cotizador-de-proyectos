@@ -1,0 +1,97 @@
+/*----------------------------------------------------------------------------*
+	$RESET
+*----------------------------------------------------------------------------*/
+
+
+/**
+ *
+ * Hacer que el padding y el border de un elemento no incremente su ancho o alto
+ * si está definido y así evitar estar haciendo calculos innecesarios.
+ *
+ */
+*
+	box-sizing: border-box
+
+	&:before,
+	&:after
+		box-sizing: border-box
+
+
+/**
+ *
+ * Prevenir modificaión de tamaño del texto al cambiar la orientación del
+ * dispositivo en IE en Windows Phone y iOS.
+ *
+ */
+html
+	-ms-text-size-adjust: 100%
+	-webkit-text-size-adjust: 100%
+
+
+/**
+ *
+ * Reiniciar las propiedades de algunas etiquetas que por defecto varian
+ * en cada navegador.
+ *
+ */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video
+	margin: 0
+	padding: 0
+	border: 0
+	outline: 0
+	background: transparent
+	vertical-align: baseline
+
+
+/**
+ *
+ * Establecer por defecto la fuente a sans-serif.
+ *
+ */
+body
+	font-family: sans-serif
+
+
+/**
+ *
+ * Hacer que versiones viejas de IE muestren como bloque las
+ * nuevas etiquetas de HTML5.
+ *
+ */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+main,
+menu,
+nav,
+section,
+summary
+	display: block
+
+
+/**
+ *
+ * Eliminar los 'puntos' que por defecto se agregan a la etiqueta `ul` en
+ * cada item del listado. Y eliminar 'los números' que se agregan en el
+ * listado de la etiqueta `ol`.
+ *
+ */
+ul,
+ol
+	list-style: none

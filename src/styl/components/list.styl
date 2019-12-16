@@ -1,0 +1,104 @@
+/*----------------------------------------------------------------------------*
+	$C-LIST
+*----------------------------------------------------------------------------*/
+
+
+/* ^.c-list
+-----------------------------------------------------------------------------*/
+
+// ul
+.c-list
+	align-items: flex-start
+	grid($justify:'start', $g:0)
+
+	> li
+		margin-bottom: 20px
+
+		+min('l')
+			col(1,2)
+
+
+// ul
+// .c-list
+// 	clearfix()
+// 	margin-left: -15px
+// 	margin-right: -15px
+//
+// 	> li
+// 		float: left
+// 		width: 50%
+// 		padding: 0 15px
+// 		margin-bottom: 20px
+
+
+.c-list--v2
+	@extend .c-list
+
+	> li
+		+min('l')
+			col(1,3)
+
+
+.c-list--v3
+	@extend .c-list
+
+	> li
+		+min('l')
+			col(1,4)
+
+
+.c-list--v4
+	@extend .c-list
+
+	> li
+		+min('l')
+			col(1,6)
+
+
+.c-list--v5
+	@extend .c-list
+
+	> li
+		col(1,2, $g:0)
+
+		+min('m')
+			col(4,12, $g:0)
+
+		+min('l')
+			col(3,12, $g:0)
+
+
+// ul subitem
+.c-list__subitem
+	margin-left: 32px
+
+	> li
+		padding-top: 20px
+
+
+/* ^Fin - .c-list
+-----------------------------------------------------------------------------*/
+
+
+
+
+
+/* ^.c-list-2
+-----------------------------------------------------------------------------*/
+
+.c-list-2
+	li
+		display: flex
+		margin-bottom: 5px
+		font-size: 1.6rem
+		color: #fff
+		font-weight: $medium
+
+		&:before
+			padding-top: 3px
+			margin-right: 7px
+			font-size: 1.2rem
+			color: $base3-color
+
+/* ^Fin - .c-list-2
+-----------------------------------------------------------------------------*/

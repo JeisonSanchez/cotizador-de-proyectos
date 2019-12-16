@@ -1,0 +1,69 @@
+/*----------------------------------------------------------------------------*
+	$C-TABLE
+*----------------------------------------------------------------------------*/
+
+
+/* ^.c-table-dark
+-----------------------------------------------------------------------------*/
+
+.c-table-dark
+	box-shadow: 0 0 20px rgba(#000, .42)
+	border-radius: 5px
+
+	th
+		padding: 10px 0
+		background: darken($base2-color, 12%)
+		text-align: left
+		font-size: 1.4rem
+		color: #fff
+
+		&:first-child
+			border-top-left-radius: 5px
+
+		&:last-child
+			border-top-right-radius: 5px
+
+		&.padding
+			padding: 10px 15px
+
+	tbody
+		tr
+			&:last-child
+				td
+					&:first-child
+						border-bottom-left-radius: 5px
+
+					&:last-child
+						border-bottom-right-radius: 5px
+
+			&:nth-child(even)
+				td
+					background: lighten($base2-color, 11%)
+
+
+
+		td
+			background: lighten($base2-color, 5%)
+			vertical-align: middle
+			padding: 7px 0
+			font-size: 1.4rem
+			color: lighten($base2-color, 70%)
+			font-weight: $medium
+
+			&.padding
+				padding: 7px 15px
+
+
+			a
+				color: $base3-color
+				transition: all .2s ease
+
+				&:hover
+					color: #fff
+
+
+.c-table-dark__center
+	text-align: center !important
+
+/* ^Fin - .c-table-dark
+-----------------------------------------------------------------------------*/

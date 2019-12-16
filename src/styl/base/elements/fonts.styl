@@ -1,0 +1,11 @@
+/*----------------------------------------------------------------------------*
+	$FONTS
+*----------------------------------------------------------------------------*/
+
+/**
+ *
+ * Definir las fuentes tipográficas en "base/config.styl".
+ *
+ */
+for font-name, val in $fonts
+	font-face(val.name, val.src, -if-exist(val.weight), -if-exist(val.style), $id-svg:val.id-svg)

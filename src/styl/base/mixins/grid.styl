@@ -1,0 +1,400 @@
+/*----------------------------------------------------------------------------*
+	$GRID
+	Mixins para crear la grilla de con base a los parametros establecidos en
+	el archivo "base/config.styl" en la sección "Responsive Web Design".
+
+	También contiene los mixins base para crear columnas personalizadas.
+*----------------------------------------------------------------------------*/
+
+$load-grid ?= true
+
+/* ^Bases de la grilla
+-----------------------------------------------------------------------------*/
+
+/**
+ *
+ * == grid() ==
+ * Contenedor de las columnas
+ *
+ */
+grid($width = false, $center = false, $g = $grid-gutter, $direction = false, $align = false, $justify = 'between')
+
+	display: flex
+	flex-wrap: wrap
+
+	if $width
+		width: 100%
+		max-width: -add-px($width)
+
+	if $center
+		margin-left: auto
+		margin-right: auto
+
+	if $width && $g is not 0
+		padding-left: -add-px($g / 2)
+		padding-right: -add-px($g / 2)
+
+	if $direction is 'row'
+		flex-direction: row
+	if $direction is 'reverse'
+		flex-direction: row-reverse
+
+	if $justify is 'start'
+		justify-content: flex-start
+		> *
+			margin-right: -rem-calc($g)
+
+	if $justify is 'end'
+		justify-content: flex-end
+		> *
+			margin-left: -rem-calc($g)
+
+	if $justify is 'center'
+		justify-content: center
+		> *
+			margin-right: -rem-calc($g / 2)
+			margin-left: -rem-calc($g / 2)
+
+	if $justify is 'around'
+		justify-content: space-around
+	if $justify is 'between'
+		justify-content: space-between
+
+	if $align is 'top'
+		align-items: flex-start
+	if $align is 'bottom'
+		align-items: flex-end
+	if $align is 'middle'
+		align-items: center
+	if $align is 'stretch'
+		align-items: stretch
+	if $align is 'baseline'
+		align-items: baseline
+
+
+
+/**
+ *
+ * == col() ==
+ * Calcula ancho para columnas con posibilidad de agregar alineación y
+ * agregar medianil personalizado
+ *
+ * Ejemplo de uso:
+
+		// Generar una columna de 5
+		col(1,5)
+
+		// Generar tres columnas de 5 con un espacio de 20px entre cada columna
+		col(3,5, $g:20px)
+
+		// Generar una columna de 3 alineada en la parte inferior
+		col(1,3, 'bottom')
+
+ *
+ */
+col($i = 1, $cols = $grid-columns, $align = '', $g = $grid-gutter, $auto = false, $auto-left = false, $auto-right = false)
+
+	if $auto
+		flex: 1 0
+		margin-left: -rem-calc($g)
+		margin-right: -rem-calc($g)
+	else if $auto-left
+		flex: 1 0
+		margin-left: -rem-calc($g)
+	else if $auto-right
+		flex: 1 0
+		margin-right: -rem-calc($g)
+
+	else
+		if !($auto || $auto-left || $auto-right)
+			if $i && $cols
+				if $g is not 0
+
+					$cal-gutter = (($cols - $i) * $g) / $cols
+					if $cal-gutter != 0
+						$cal-gutter = s(' - %s', -rem-calc($cal-gutter))
+					else
+						$cal-gutter = null
+
+					flex-basis: s('calc(100% * %s%s)', $i / $cols, $cal-gutter)
+					max-width: s('calc(100% * %s%s)', $i / $cols, $cal-gutter)
+				else
+					flex-basis: 100% * ($i / $cols)
+					max-width: 100% * ($i / $cols)
+			else
+				flex-basis: 100%
+
+	if $align is 'top'
+		align-self: flex-start
+	if $align is 'bottom'
+		align-self: flex-end
+	if $align is 'center'
+		align-self: center
+	if $align is 'baseline'
+		align-self: baseline
+	if $align is 'stretch'
+		align-self: stretch
+
+
+/**
+ *
+ * == col-offset() ==
+ * Margen izquierdo para separar columnas
+ *
+ */
+col-offset($i = 1, $cols = $grid-columns, $g = $grid-gutter)
+	if $i != 0
+		margin-left: s('calc(100% * %s + %s)', $i / $cols, -rem-calc(($i / $cols) * $g)) !important
+	else
+		margin-left: 0 !important
+
+/* ^Fin - Bases de la grilla
+-----------------------------------------------------------------------------*/
+
+
+
+
+
+/* ^Generadores de la grilla
+-----------------------------------------------------------------------------*/
+
+/**
+ *
+ * == grid-group-classes() ==
+ * Agrupa todas clases generadas por la grilla para aplicar propiedades CSS
+ * que usan en común todas las columnas
+ *
+ */
+grid-group-classes-generator($cols = $grid-columns, $g = $grid-gutter, $col-class = $grid-column-class)
+
+	[class*={$col-class}]
+		col(false, false)
+
+	/*
+	// Agrupar clases en una sola regla
+	$classes = ()
+	for key, val in $breakpoints
+		for i in range(1, $cols, 1)
+			$values = '.' + $col-class + '-' + key + '-' + i
+			push($classes, $values)
+			$classes = join(',', $classes)
+	{$classes}
+		col(false, false, $g)
+	*/
+
+
+/**
+ *
+ * == grid-columns-generator() ==
+ * Genera las clases para las columnas
+ *
+ * Ejemplo:
+
+		.g-col-m-6
+		.g-col-s-8.g-col-xl-6.g-hd-3
+
+ *
+ */
+grid-columns-generator($cols = $grid-columns, $g = $grid-gutter, $class-name = $grid-class-name, $col-class = $grid-column-class)
+
+	for key, val in $breakpoints
+
+		// Generar clases por cada breackpoint para columas, offsets y orders
+		generate-classes()
+
+			// Auto columnas
+			.{$col-class}-auto-{key}
+				col($auto: true)
+
+			.{$col-class}-auto-ml-{key}
+				col($auto-left: true)
+
+			.{$col-class}-auto-mr-{key}
+				col($auto-right: true)
+			// Fin - Auto columnas
+
+
+			// Columnas
+			for i in range(1, $cols, 1)
+				.{$col-class}-{key}-{i}
+					col(i, $cols, $g)
+					margin: 0
+
+			// Offset columnas
+			for i in range(1, $cols, 1)
+				.{$col-class}-offset-{key}-{i}
+					col-offset(i, $cols, $g)
+
+
+			// Ordenar columnas
+			.{$col-class}-first-{key}
+				order: -1
+
+			.{$col-class}-last-{key}
+				order: 1
+
+
+			// Alineación vertical de columnas
+			.{$col-class}-top-{key}
+				align-self: flex-start
+
+			.{$col-class}-bottom-{key}
+				align-self: flex-end
+
+			.{$col-class}-center-{key}
+				align-self: center
+
+			.{$col-class}-baseline-{key}
+				align-self: baseline
+
+			.{$col-class}-stretch-{key}
+				align-self: stretch
+
+
+		if val == 0
+			generate-classes()
+
+		else
+			// Media Queries generadas con cada breakpoint
+			+min(val + 1)
+				generate-classes()
+
+
+
+/**
+ *
+ * == grid-container-generator() ==
+ * Genera las clases aplicadas al contenedor y no a sus hijos
+ *
+ * Ejemplo:
+
+	.g-container.g-m-6.g-xl-3
+		.g-col Columna 1
+		.g-col Columna 2
+		.g-col Columna 3
+		.g-col Columna 4
+
+ *
+ */
+grid-container-generator($cols = $grid-columns, $g = $grid-gutter, $class-name = $grid-class-name, $col-class = $grid-column-class)
+
+	for key, val in $breakpoints
+
+		generate-classes()
+
+			// Auto columnas
+			.{$class-name}-{key} > [class~={$col-class}]
+				flex-grow: 1
+				flex-basis: 0
+
+			// Columnas
+			for i in range(1, $cols, 1)
+				.{$class-name}-{key}-{i} > [class~={$col-class}]
+					col(i, $cols, $g)
+
+
+			// Orientacion
+			.{$class-name}-row-{key}
+				flex-direction: row
+
+			.{$class-name}-reverse-{key}
+				flex-direction: row-reverse !important
+
+
+			// Justificación horizontal de items
+			.{$class-name}-left-{key}
+				justify-content: flex-start !important
+
+				> [class~={$col-class}]
+					margin-right: -rem-calc($g)
+
+			.{$class-name}-right-{key}
+				justify-content: flex-end !important
+
+				> [class~={$col-class}]
+					margin-left: -rem-calc($g)
+
+			.{$class-name}-center-{key}
+				justify-content: center !important
+
+				> [class~={$col-class}]
+					margin-left: -rem-calc($g / 2)
+					margin-right: -rem-calc($g / 2)
+
+			.{$class-name}-around-{key}
+				justify-content: space-around !important
+
+			.{$class-name}-between-{key}
+				justify-content: space-between !important
+
+
+
+			// Alineación vertical de items
+			.{$class-name}-top-{key}
+				align-items: flex-start
+
+			.{$class-name}-bottom-{key}
+				align-items: flex-end
+
+			.{$class-name}-middle-{key}
+				align-items: center
+
+			.{$class-name}-baseline-{key}
+				align-items: baseline
+
+			.{$class-name}-stretch-{key}
+				align-items: stretch
+
+
+		if val == 0
+			generate-classes()
+
+		else
+			// Media Queries generadas con cada breakpoint
+			+min(val + 1)
+				generate-classes()
+
+
+/* ^Fin - Generadores de la grilla
+-----------------------------------------------------------------------------*/
+
+
+
+
+
+/* ^Contenedores
+-----------------------------------------------------------------------------*/
+
+container-generator()
+
+	.{$grid-class-name}-container-full
+		grid()
+
+	.{$grid-class-name}-container
+		grid($center:true)
+		width: 100%
+
+		+max('l')
+			width: calc(100% - 20px)
+			margin-right: 10px
+			margin-left: 10px
+
+		+min('l')
+			max-width: 750px
+
+		+desktop()
+			max-width: 970px
+
+		+hd()
+			max-width: -add-px($container)
+
+/* ^Fin - Contenedores
+-----------------------------------------------------------------------------*/
+
+if $load-grid
+	grid-group-classes-generator()
+	grid-columns-generator()
+	grid-container-generator()
+
+
+container-generator()

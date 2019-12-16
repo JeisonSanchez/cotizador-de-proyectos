@@ -1,0 +1,50 @@
+/*----------------------------------------------------------------------------*
+	$O-STEP
+*----------------------------------------------------------------------------*/
+
+
+/* ^.o-step
+-----------------------------------------------------------------------------*/
+
+.o-step
+	display: flex
+	justify-content: center
+	align-items: center
+	width: 28px
+	height: @width
+	border-radius: 50%
+	background: $base2-color
+	color: #fff
+	font-size: 1.5rem
+	font-weight: $semi-bold
+
+	[class*="icon"]
+		display: inline-block
+		padding-top: 3px
+		font-size: 1.6rem
+
+	.ok
+		display: none
+
+	+min('l')
+		width: 35px
+		height: @width
+		font-size: 1.8rem
+
+.o-step--v2
+	@extend .o-step
+	background: $base-color
+
+
+.o-step--ok
+	@extend .o-step
+	background: #00CF9C
+
+	.ok
+		display: inline
+
+	.number
+		display: none
+
+/* ^Fin - .o-step
+-----------------------------------------------------------------------------*/

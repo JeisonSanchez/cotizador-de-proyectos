@@ -1,0 +1,125 @@
+/*----------------------------------------------------------------------------*
+	$C-PEDIDO
+*----------------------------------------------------------------------------*/
+
+
+/* ^.c-pedido
+-----------------------------------------------------------------------------*/
+
+.c-pedido
+	overflow: hidden
+	border-radius: 5px
+	box-shadow: 0 0 7px 0 rgba(#2D3E50, .10);
+	background: $base2-color
+
+	+min('xl')
+		border-radius: 0 5px 5px 0
+
+.c-pedido__title
+	padding: 12px 18px
+	background: darken($base2-color, 20%)
+	text-align: center
+	color: #fff
+	font-size: 2rem
+	font-weight: $semi-bold
+
+
+.c-pedido__list
+	padding: 18px
+
+
+.c-pedido__costo
+	position: relative
+	padding-top: 30px
+	padding-bottom: 10px
+	margin-top: 20px
+	border-top: 2px solid $base3-color
+	text-align: center
+
+	&:before
+		position: absolute
+		z-index: 3
+		top: -11px
+		left: 50%
+		margin-left: 2px
+		font-size: 2rem
+		color: $base3-color
+		transform: translateX(-50%)
+
+
+	&:after
+		position: absolute
+		content: ''
+		top: -22.5px
+		left: 50%
+		width: 45px
+		height: @width
+		border-radius: 50%
+		border: 2px solid $base3-color
+		background: $base2-color
+		transform: translateX(-50%)
+
+
+.c-pedido__text-1
+	font-size: 1.8rem
+	color: #fff
+	font-weight: $semi-bold
+
+
+.c-pedido__total
+	font-size: 2.8rem
+	color: $base3-color
+	font-weight: $bold
+
+
+.c-pedido__box-1
+	padding: 18px
+	background: darken($base2-color, 6)
+	text-align: center
+
+
+.c-pedido__campo
+	margin-bottom: 10px
+
+	&:last-child
+		padding-top: 5px
+		margin-bottom: 0
+
+
+.c-pedido__btn
+	flex: 1
+	width: 100%
+	text-align: center
+	margin-top: 10px
+
+
+.c-pedido__intro
+	padding: 18px 30px 0 30px
+	margin: 0
+	text-align: center
+	font-weight: $medium
+	color: #fff
+
+
+.c-pedido__add-actividad
+	grid()
+	padding: 18px 15px
+
+
+.c-pedido__col-1
+	col(19,24, $g:20)
+
+
+.c-pedido__col-2
+	col(5,24, $g:20)
+
+
+.c-pedido__content
+	padding: 18px 18px 0 18px
+
+	&:last-child
+		margin-bottom: 0
+
+
+/* ^Fin - .c-pedido
+-----------------------------------------------------------------------------*/

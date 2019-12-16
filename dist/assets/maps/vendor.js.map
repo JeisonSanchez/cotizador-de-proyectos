@@ -1,0 +1,1 @@
+{"version":3,"names":[],"mappings":"","sources":["vendor.js"],"sourcesContent":["function vendor(){\n\tvar vendor = \"Lucas\";\n\talert(vendor);\n\tvar vendor += vendor;\n\tvar num = 23;\n\talert(num);\n}\n"],"file":"../js/vendor.js"}

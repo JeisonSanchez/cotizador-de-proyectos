@@ -1,0 +1,88 @@
+/*----------------------------------------------------------------------------*
+	$FONT-FACE
+	Mixin para agregar fuentes tipográficas personalizadas
+*----------------------------------------------------------------------------*/
+
+/**
+ *
+ * == font-face() ==
+ * Agregar fuentes tipo texto o icon si se usa con el mixin font-icon()
+ * ----------------------------------------------------------------------------
+ *
+ * Ejemplo 1: pasando solo 3 parametros, nombre de fuente, archivo e id svg
+
+		font-face('Open Sans', open-sans, $id-svg: opensans)
+
+ *
+ * Ejemplo 2: pasando 5 parametros [nombre fuente, archivo, grosor, estilo, id svg]
+
+		font-face('Roboto Condensed', roboto-condensed, bold, italic, $id-svg:roboto)
+		font-face(Lato, 'directorio/lato', 500, normal, $id-svg:lato)
+
+ *
+ */
+font-face($name, $src, $weight = false, $style = false, $is-icon = false, $class-prefix-icon = false, $list-icons = false, $id-svg)
+	@font-face
+		font-family: $name
+		src: url($font-path + $src + '.eot')
+		src: url($font-path + $src + '.eot?#iefix') format('embedded-opentype'),
+			 url($font-path + $src + '.woff2') format('woff2'),
+			 url($font-path + $src + '.woff') format('woff'),
+			 url($font-path + $src + '.ttf') format('truetype'),
+			 url($font-path + $src + '.svg#' + $id-svg) format('svg')
+		font-weight: -delete-quote($weight) if $weight
+		font-style: -delete-quote($style) if $style
+
+	if $is-icon
+
+		if $class-prefix-icon
+			$i = $class-prefix-icon
+
+		// Si no se define una clase para el prefijo de los iconos
+		else
+			$i = 'icon'
+
+		$i = -delete-quote($i)
+
+		[class^={s('"%s-"', $i)}]:before,
+		[class^={s('"%s-"', $i)}]:after,
+		[class*={s('" %s-"', $i)}]:before,
+		[class*={s('" %s-"', $i)}]:after
+			font-family: $name !important;
+			speak: none;
+			font-style: normal;
+			font-weight: normal;
+			font-variant: normal;
+			text-transform: none;
+			line-height: 1;
+			font-smoothing()
+
+		if $list-icons
+
+			for icon-name, val in $list-icons
+				.{$i}-{icon-name}:before
+					content: s('"%s"', -delete-quote(val))
+
+
+
+/**
+ *
+ * == font-icon() ==
+ * Agregar fuentes tipo icon. Se requiere agregar un Hashed con los nombres de
+ * los glifos y Unicodes. Pasar Hashed como parametro en la variable $list-icons
+ * ----------------------------------------------------------------------------
+ *
+ * Ejemplo: 5 parametros [nombre fuente, archivo, glifos, prefijo clase, nombre svg]
+
+		$glifos-nigma: {
+			clock    : '\ea4d',
+			user     : '\eb08',
+			arrow-up : '\eae1'
+		}
+		font-icon('Grupo Nigma', nigma, $glifos-nigma, ng, nigma-svg)
+
+ *
+ *
+ */
+font-icon($name, $src, $list-icons = false, $class-prefix-icon = 'icon', $id-svg)
+	font-face($name, $src, normal, normal, true, $class-prefix-icon, $list-icons, $id-svg)

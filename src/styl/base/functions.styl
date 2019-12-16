@@ -1,0 +1,70 @@
+/*----------------------------------------------------------------------------*
+	$FUNCTIONS
+*----------------------------------------------------------------------------*/
+
+/**
+ *
+ * == -delete-quote() ==
+ * Eliminar comillas al pasar parametro
+ *
+ */
+-delete-quote()
+	if arguments is a 'string'
+		unquote(arguments)
+	else
+		arguments
+
+
+/**
+ *
+ * == -add-quote() ==
+ * Agregar comillas al pasar parametro
+ *
+ */
+-add-quote()
+	if arguments is a 'ident'
+		s('%s', arguments)
+	else
+		arguments
+
+
+
+/**
+ *
+ * == -if-exist() ==
+ * Verificar si existe una variable
+ *
+ */
+-if-exist()
+	if arguments
+		arguments
+
+
+
+/**
+ *
+ * == rem-calc() ==
+ * Calcular un valor en unidad de medida `rem`
+ *
+ */
+-rem-calc()
+	u = unit(arguments)
+	if (u is 'rem')
+		return unit(arguments, u)
+	else
+		return unit(arguments / $base-font-size, 'rem')
+
+
+
+/**
+ *
+ * == -add-px() ==
+ * Agregar px si no se agregó
+ *
+ */
+-add-px()
+	u = unit(arguments)
+	if (u is 'px')
+		return unit(arguments, u)
+	else
+		return unit(arguments, 'px')

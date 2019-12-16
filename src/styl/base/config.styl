@@ -1,0 +1,251 @@
+/*----------------------------------------------------------------------------*
+	$CONFIG
+	Este es el corazón del framework. Contiene la configuración global
+	para todos los archivos.
+*----------------------------------------------------------------------------*/
+
+/**
+ *
+ * == Directorios ==
+ * Define ruta para la carpeta de imágenes y fuentes
+ * ----------------------------------------------------------------------------
+ *
+ * Ejemplo de uso en una imagen:
+
+		background: url($img-path + 'logo.jpg')
+
+ *
+ */
+$img-path = '../images/'
+$font-path = '../fonts/'
+
+
+
+
+
+/* ^Tipografía
+-----------------------------------------------------------------------------*/
+
+/**
+ *
+ * == $fonts ==
+ * Define las fuentes tipográficas que serán usadas en todo el sito.
+ * - Nota 1: Las fuentes son procesadas en "base/elements/fonts.styl"
+ * - Nota 2: Para usar icon fonts ver archivo "base/elements/icon-fonts.styl"
+ *
+ * Ejemplo de uso:
+
+		$font = {
+			f1: {
+				name   : 'nombre de la fuente',      // Requerido
+				src    : 'ruta con nombre de arhivo' // Requerido
+				weight : 'grosor de la fuente',
+				style  : 'estilo de la fuente',
+				id-svg : 'nombre del id svg'         // Requerido
+			}
+		}
+
+ *
+ */
+$fonts = {
+	// f1: {
+	// 	name   : 'Open Sans Regular',
+	// 	src    : 'opensans/open-sans-regular',
+	// 	weight : 400,
+	// 	id-svg : opensansregular
+	// },
+	// f2: {
+	// 	name   : 'Open Sans Regular Italic',
+	// 	src    : 'opensans/open-sans-regular-italic',
+	// 	weight : 400,
+	// 	style  : italic,
+	// 	id-svg : opensansregularitalic
+	// },
+	// f3: {
+	// 	name   : 'Open Sans Bold',
+	// 	src    : 'opensans/open-sans-bold',
+	// 	weight : 700,
+	// 	id-svg : opensansbold
+	// }
+}
+
+
+/**
+ *
+ * == Fuentes base ==
+ * Variables usadas para llamar cada fuente al escribir las reglas CSS, de esta
+ * manera cuando se haga un cambio de tipografía a todo el sitio solo se
+ * modifica la variable y no cada regla CSS.
+ *
+ */
+$base-font-family  = "proxima-nova", sans-serif
+$base-font-weight  = $normal
+$base-line-height  = 1.3
+
+
+
+/**
+ *
+ * == $base-font-size ==
+ * Usado para hacer los calculos con la unidad de medida `rem`.
+ * Se recomienda usar como base 10px, así mentalmente el calculo se hará más
+ * rápido. Por ejemplo:
+
+		2rem equivalen a 20px
+		5rem equivalen a 50px
+		1.5rem equivalen a 15px
+		.8rem equivalen a 8px
+
+ *
+ */
+$base-font-size = 10px
+
+
+/**
+ *
+ * == Encabezados ==
+ * Fuente tipográfica y tamaños de letra para elementos h1...h6
+ *
+ */
+$header-font-family = $base-font-family
+$header-font-weight = $bold
+
+// Tamaños para encabezados
+$header-font-size = {
+	h1 : 3.2rem
+	h2 : 2.5rem
+	h3 : 1.9rem
+	h4 : 1.6rem
+	h5 : 1.4rem
+	h6 : 1.2rem
+}
+
+
+/**
+ *
+ * == ^Textos  ^Parrados ==
+ *
+ */
+// Tamaños para textos
+$text-size = {
+	small    : .9rem
+	normal   : 1.6rem
+	normal-1 : 1.9rem
+	normal-2 : 2rem
+	normal-3 : 2.2rem
+	normal-4 : 2.5rem
+	medium   : 3rem
+	large    : 3.3rem
+	large-2  : 3.5rem
+	huge     : 5.6rem
+}
+
+// Grosor de fuente
+$thin       = 100
+$light      = 300
+$normal     = 400
+$medium     = 500
+$semi-bold  = 600
+$bold       = 700
+$extra-bold = 800
+$super-bold = 900
+
+// Configuración por defecto para parrafos
+$p-margin-bottom = $text-size.normal
+$p-font-size     = $text-size.normal
+
+/* ^Fin - Tipografía
+-----------------------------------------------------------------------------*/
+
+
+
+
+
+/* ^Colores
+-----------------------------------------------------------------------------*/
+
+/**
+ *
+ * == Colores base ==
+ * Define los colores principales de la interfaz gráfica
+ *
+ */
+$base-color        = #35B4DB // Azul claro
+$base-color-light  = lighten($base-color, 30%)
+$base-color-dark   = darken($base-color, 30%)
+
+$base2-color       = #4C668C // Azul oscuro
+$base2-color-light = lighten($base-color, 30%)
+$base2-color-dark  = darken($base-color, 30%)
+
+$base3-color       = #00FFF6 // Azul luminoso
+$base3-color-light = lighten($base-color, 30%)
+$base3-color-dark  = darken($base-color, 30%)
+
+
+/**
+ *
+ * == Colores base para textos ==
+ * Usados principalmente para titulos, parrafos, enlaces, etc...
+ *
+ */
+$base-text-color = #647684
+
+
+/**
+ *
+ * == $base-text-color-bold ==
+ * Se aplica por defecto a todas las etiquetas `b` y `strong`
+ *
+ */
+$base-text-color-bold = darken($base-text-color, 30%)
+
+
+/**
+ *
+ * == $base-link-color ==
+ * Color por defecto para los enlaces
+ *
+ */
+$base-link-color       = $base-color
+$base-link-color-hover = $base-color-dark
+
+
+/* ^Fin - Colores
+-----------------------------------------------------------------------------*/
+
+
+
+
+
+/* ^Responsive Web Design
+-----------------------------------------------------------------------------*/
+
+/**
+ *
+ * == $breakpoints por defecto ==
+ * Puntos de interrupción usados en la generación de la grilla y para
+ * trabajar con las Media Queries
+ *
+ */
+$breakpoints = {
+	'xs' : 0,
+	's'  : 320px,
+	'm'  : 480px,
+	'l'  : 768px,
+	'xl' : 991px,
+	'hd' : 1199px
+}
+
+// Configuración de la grilla
+$grid-gutter       = 30px    // Medianil de columnas
+$grid-columns      = 12      // Total de columnas de la grilla
+$grid-class-name   = 'g' 	 // Nombre de contenedor de columnas
+$grid-column-class = 'g-col' // Nombre para columnas
+
+
+// Ancho máximo para la caja container
+$container	   = 1134px
+
+/* ^Fin - Responsive Web Design
+-----------------------------------------------------------------------------*/

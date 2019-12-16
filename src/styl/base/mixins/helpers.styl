@@ -1,0 +1,61 @@
+/*----------------------------------------------------------------------------*
+	$HELPERS
+	Mixins de ayuda para una tarea especifica
+*----------------------------------------------------------------------------*/
+
+
+/**
+ *
+ * == fontSmoothing() ==
+ * Agregar suavisado al texto para que sea mas legible
+ *
+ */
+font-smoothing()
+	-webkit-font-smoothing: antialiased
+	-moz-osx-font-smoothing: grayscale
+
+
+
+/**
+ *
+ * == btn() ==
+ * Eliminar apariencia por defecto para button e input[type=button]
+ *
+ */
+btn()
+	appearance: none
+	border: none
+	outline: 0
+
+
+
+/**
+ *
+ * == placeholder() ==
+ * Editar estilo por defecto para el placeholder de input y textarea
+ *
+ */
+placeholder($color = false)
+	for vendor in ':-webkit-input' '-moz' ':-moz' '-ms-input'
+		&:{vendor}-placeholder
+			// Mostrar opacidad en 1 en firefox
+			opacity: 1 if vendor == ':-moz' or vendor == '-moz'
+			color: $color if $color
+			{block}
+
+
+
+/**
+ *
+ * == clearfix() ==
+ * Limpiar floats de elementos hijos en elemento padre
+ * -> http://nicolasgallagher.com/micro-clearfix-hack/
+ *
+ */
+clearfix()
+	&:before
+	&:after
+		content: ""
+		display: table
+	&:after
+		clear: both

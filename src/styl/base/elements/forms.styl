@@ -1,0 +1,47 @@
+/*----------------------------------------------------------------------------*
+	$FORMS
+*----------------------------------------------------------------------------*/
+
+/**
+ *
+ * Heredar correctamente las propiedades de fuente y color, y reiniciar el
+ * valor del margen que se agrega en Firefox, Safari y Chrome.
+ *
+ */
+button,
+input,
+select,
+textarea
+	margin: 0
+	font: inherit
+	color: inherit
+
+
+/**
+ *
+ * Cambia el icono del cursor a una 'mano' al pasar sobre un elemento de tipo botón.
+ *
+ */
+button,
+input[type="reset"],
+input[type="submit"]
+	cursor: pointer
+
+
+/**
+ *
+ * Reiniciar el cursor a 'por defecto' al pasar sobre un elemento desactivado.
+ *
+ */
+button[disabled],
+input[disabled]
+	cursor: default
+
+
+/**
+ *
+ * Eliminar el scroll vertical que aparece en IE 8/9/10/11
+ *
+ */
+textarea
+	overflow: auto

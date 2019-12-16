@@ -1,0 +1,43 @@
+{
+  "name": "nigma-framework",
+  "version": "3.0.0",
+  "description": "Código pre-horneado listo para mezclar, probar y disfrutar!",
+  "author": {
+    "name": "Jeison Sanchez",
+    "email": "jeison@nigma.co",
+    "url": "http://www.nigma.co"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "autoprefixer": "^6.5.3",
+    "browser-sync": "^2.18.2",
+    "css-mqpacker": "^5.0.1",
+    "cssnano": "^3.8.0",
+    "gulp": "^3.9.1",
+    "gulp-cachebust": "0.0.6",
+    "gulp-changed": "^1.3.2",
+    "gulp-collate": "0.0.3",
+    "gulp-deleted": "0.0.2",
+    "gulp-environments": "^0.1.1",
+    "gulp-header": "^1.8.8",
+    "gulp-html-prettify": "0.0.1",
+    "gulp-imagemin": "^3.1.1",
+    "gulp-include": "^2.3.1",
+    "gulp-notify": "^2.2.0",
+    "gulp-plumber": "^1.1.0",
+    "gulp-postcss": "^6.2.0",
+    "gulp-pug": "^3.1.0",
+    "gulp-pug-inheritance": "^0.2.1",
+    "gulp-sourcemaps": "^1.9.1",
+    "gulp-stylus": "^2.6.0",
+    "gulp-uglify": "^2.0.0",
+    "imagemin-jpeg-recompress": "^5.1.0",
+    "imagemin-pngquant": "^5.0.0",
+    "perfectionist": "^2.3.1",
+    "require-dir": "^0.3.1"
+  }
+}

@@ -1,0 +1,651 @@
+
+## ------------------------------------------------------------------ ##
+
+#      Este archivo contiene directivas de configuración que el
+#      servidor Apache puede interpretar y aplicar a todo el
+#      el directorio raíz y subdirectorios por dentro de el.
+
+#      Esta configuración ayuda a mejorar la seguridad y el
+#      rendimiento de tu sitio Web haciendolo mas velóz lo
+#      cual favorese el SEO, en otras palabras:
+
+#      Web rápida = Mejor experiencia (usuarios felices)
+#      Mejor experiencia = Más ventas (Tu Web mejor posicionada)
+#      Más ventas = Eres más feliz :)
+
+## ------------------------------------------------------------------ ##
+
+#  NOTA 1: El símbolo (#) permite comentar el código, por lo tanto hay 
+#  instrucciones que están comentadas para que no se ejecuten.
+#  Descomenta las instrucciones que requieras, verás que solo están
+#  activas aquellas que considero importantes para mejorar el rendimiento
+
+#  NOTA 2: Veras que todas directivas están incluidas en una 
+#  condicional <IfModule>, esto es para evitar errores en caso que la
+#  directiva no esté habilitada en el servidor.
+
+
+
+
+
+
+# ---------------------------------------------------------------------*\
+#  PÁGINA EN MANTENIMIENTO
+# ---------------------------------------------------------------------*/
+
+#  Una manera fácil de colocar en estado de mantenimiento el sitio Web. 
+#  Con esto puedes probar que todos los cambios que realices se vean
+#  bien antes de publicar, y evitar que los usuarios vean posibles errores
+#  durante la actualización.
+
+#  PROCESO PARA ACTIVAR Y DESACTIVAR ESTADO EN MANTENIMIENTO
+
+#    1) Cambiar el nombre del fichero `mantenimiento.desactivar` por
+#       `mantenimiento.activar` en el directorio raíz.
+
+#    2) Descomenta la linea que contiene `RewriteCond %{REMOTE_ADDR}`
+#       y agrega la IP desde donde vas a realizar el mantenimiento.
+#       Con esto solo tu podrás ver el sitio mientras realizas los cambios.
+
+#    3) Para desactivar el estado en mantenimiento cambia el nombre del 
+#       fichero `mantenimiento.activar` por `mantenimiento.desactivar`
+#       y listo :), es opcional que vuelvas a comentar la linea 
+#       `RewriteCond %{REMOTE_ADDR}`
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # RewriteCond %{REMOTE_ADDR} !^111.222.33.444
+
+    RewriteCond %{DOCUMENT_ROOT}/mantenimiento.html -f
+    RewriteCond %{DOCUMENT_ROOT}/mantenimiento.activar -f
+    RewriteCond %{SCRIPT_FILENAME} !mantenimiento.html
+    RewriteCond %{REQUEST_URI} !.(jpe?g?|png|gif|ico|css|ttf|ttc|otf|eot|woff|woff2)
+    RewriteRule ^.*$ /mantenimiento.html [R=503,L]
+    ErrorDocument 503 /mantenimiento.html
+    Header Set Cache-Control "max-age=0, no-store"
+</IfModule>
+
+
+
+
+
+
+
+# ---------------------------------------------------------------------*\
+#  BLOQUEAR ACCESO A DIRECTORIOS SIN UN INDEX
+# ---------------------------------------------------------------------*/
+
+#  La siguiente directiva evita que se pueda navegar en las carpetas que
+#  no tengan un archivo predeterminado como por ejemplo un index.html
+
+#  Algunos servidores tienen esta opción deshabilitada lo cual abre una
+#  puerta al intruso que quiera espiar archivos privados.
+
+
+<IfModule mod_autoindex.c>
+    Options -Indexes
+</IfModule>
+
+
+
+
+
+
+
+# ---------------------------------------------------------------------*\
+#  ERROR 404
+# ---------------------------------------------------------------------*/
+
+#  Cuando un archivo o directorio no existe por defecto el
+#  el servidor muestra una página de error 404 con un mensaje similar
+#  a este: "Not Found".
+
+#  Con la siguiente directiva puedes personalizar la página de error 404
+
+#  Personalizar el error 404 ayuda al SEO del sitio Web, ya que al no
+#  ser encontrado por Google se puede agregar por ejemplo un menú de
+#  navegación para que Google pueda seguir rastreando contenido, y si
+#  un usuario por error escribe mal una ruta podemos indicarle que 
+#  acción puede tomar, como mostrarle un botón que lo lleve a la página
+#  de inicio. Te recomiendo buscar en Google "examples error 404" para
+#  que veas maneras creativas de crear esta página de error.
+
+ErrorDocument 404 /404.html
+
+
+
+
+
+
+
+# ---------------------------------------------------------------------*\
+#  CROSS-ORIGIN - COMPARTIR RECURSOS
+# ---------------------------------------------------------------------*/
+
+#  Algunos recursos del servidor por defecto no se pueden compartir
+#  por seguridad. Un caso muy particular son las fuentes Web, si quieres
+#  que desde dominio A se pueda usar la fuente Web en dominio B
+#  entonces debes habiliar el permiso, ya sea para todos los dominios 
+#  usando "*" o bien especificar que dominios tienen acceso.
+
+
+######  Compartir todos los recursos  ######
+
+#  La siguiente directiva habilita el permiso a cualquier dominio para
+#  acceder a TODOS los recursos del servidor. 
+
+#  <IfModule mod_headers.c>
+#      Header set Access-Control-Allow-Origin "*"
+#  </IfModule>
+
+
+######  Compartir todos los recursos SOLO para algunos dominios  ######
+
+#  La siguiente directiva habilita el permiso de compartir TODOS los
+#  recursos SOLO para los dominios que especifiques.
+
+#  En el ejemplo he agregado dos dominios (dominio1.com y dominio2.com),
+#  y también agregué las rutas para posibles servidores de prueba que
+#  utilices, cambialos por los que quieras dar permiso o agrega más.
+
+#  Para agregar más dominios presta atención a la estructura de la regla: 
+#  todos los dominios están por dentro de un parentesis y tienen
+#  esta estructura:
+
+#       (dominio1|dominio2|dominio3 ...etc)
+
+#  <IfModule mod_headers.c>
+#      SetEnvIf Origin "^http(s)?://(.+\.)?(localhost|localhost:8888|localhost:3000|dominio1\.com|dominio2\.org)$" origin_is=$0
+#      Header always set Access-Control-Allow-Origin %{origin_is}e env=origin_is
+#  </IfModule>
+
+
+######  Compartir SOLO recursos de fuentes Web  ######
+
+#  La siguiente directiva habilita el permiso a cualquier dominio para
+#  acceder SOLO a los diferentes formatos de fuentes Web. 
+
+#  <IfModule mod_headers.c>
+#      <FilesMatch "\.(ttf|ttc|otf|eot|woff|woff2)$">
+#          Header set Access-Control-Allow-Origin "*"
+#      </FilesMatch>
+#  </IfModule>
+
+
+
+
+
+
+
+# ---------------------------------------------------------------------*\
+#  FORZAR CODIFICACIÓN UTF-8
+# ---------------------------------------------------------------------*/
+
+#  Esto ayuda a evitar que se muestren carateres extraños en la
+#  acentuación  de palabras y caracteres especiales, como la
+#  `ñ, áéíóú`... etc
+
+AddDefaultCharset utf-8
+
+<IfModule mod_mime.c>
+    AddCharset utf-8 .css .js .json .rss .xml
+</IfModule>
+
+
+
+
+
+
+
+# ---------------------------------------------------------------------*\
+#  ARCHIVOS SOPORTADOS
+# ---------------------------------------------------------------------*/
+
+#  Dependiendo de la configuración del servidor algunos tipos de archivos
+#  no se pueden ejecutar directamente en el navegador, lo cual hace que
+#  se genere una salida de descarga del archivo a nuestro equipo. 
+
+#  Con esta configuración se asegura que los archivos agregados a
+#  continuación serán ejecutados en el navegador.
+
+<IfModule mod_mime.c>
+
+    # Intercambio de datos
+
+      AddType application/json                            json map topojson
+      AddType application/ld+json                         jsonld
+      AddType application/vnd.geo+json                    geojson
+      AddType application/xml                             atom rdf rss xml
+
+    # JavaScript
+
+      AddType application/javascript                      js
+
+    # Archivos multimedia
+
+      AddType audio/mp4                                   f4a f4b m4a
+      AddType audio/ogg                                   oga ogg opus
+      AddType image/bmp                                   bmp
+      AddType image/webp                                  webp
+      AddType video/mp4                                   f4v f4p m4v mp4
+      AddType video/ogg                                   ogv
+      AddType video/webm                                  webm
+      AddType video/x-flv                                 flv
+      AddType image/svg+xml                               svg svgz
+      AddType image/x-icon                                cur ico
+
+    # Fuentes Web
+
+      AddType application/font-woff                       woff
+      AddType application/font-woff2                      woff2
+      AddType application/x-font-ttf                      ttc ttf
+      AddType font/opentype                               otf
+      AddType application/vnd.ms-fontobject               eot
+
+    # Otros
+
+      AddType text/x-component                            htc
+
+</IfModule>
+
+
+
+
+
+
+# ---------------------------------------------------------------------*\
+#  REDIRECCIONAR dominio.com -> www.dominio.com
+# ---------------------------------------------------------------------*/
+
+#  ¡IMPORTANTE! -> Si vas a usar la redirección con https desactiva estas
+#  directivas comentando cada línea, y descomenta las directivas que
+#  redireccionan a https.
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{HTTP_HOST} ^[^.]+\.[^.]+$
+    RewriteCond %{HTTPS} !=on
+    RewriteCond %{HTTP_HOST} !^www\. [NC]
+    RewriteCond %{SERVER_ADDR} !=127.0.0.1
+    RewriteCond %{SERVER_ADDR} !=::1
+    RewriteRule ^ http://www.%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+</IfModule>
+
+
+
+
+
+
+
+# ---------------------------------------------------------------------*\
+#  REDIRECCIONAR http://dominio.com -> https://www.dominio.com
+# ---------------------------------------------------------------------*/
+
+#  Activar solo si tienes instalado un certificado SSL en el servidor.
+
+#<IfModule mod_rewrite.c>
+#    RewriteEngine On
+
+  # Si es https sin www, redireccionar con www.
+
+#    RewriteCond %{HTTPS} on
+#    RewriteCond %{HTTP_HOST} !^www\.
+#    RewriteRule ^(.*)$ https://www.%{HTTP_HOST}/$1 [R=301,L]
+
+
+  # Si no es https y no tiene www, redireccionar a https con www.
+
+#    RewriteCond %{HTTPS} !=on
+#    RewriteCond %{HTTP_HOST} !^www\.
+#    RewriteRule ^(.*) https://www.%{SERVER_NAME}/$1 [R=301,L]
+
+
+  # Si no es https y ya tiene www, redireccionar a https
+
+#    RewriteCond %{HTTPS} !=on
+#    RewriteCond %{HTTP_HOST} ^www\.
+#    RewriteRule ^(.*) https://%{SERVER_NAME}/$1 [R=301,L]
+
+#</IfModule>
+
+
+
+
+
+
+
+# ---------------------------------------------------------------------*\
+#  URLs AMIGABLES
+# ---------------------------------------------------------------------*/
+
+#  Seguro has trabajado o visto una URL como esta:
+
+#     pepito.com/index.php?tipo=nuevos&categoria=zapatos
+
+#  Este tipo de URLs no son optimas para SEO y para el usuario, sería
+#  mejor si esta URL fuese así:
+
+#     pepito.com/nuevos/zapatos/
+
+#  Para activar las URLs amigables descomenta las lineas donde aparece
+#  RewriteBase, RewriteRule y RewriteCond.
+
+#  En el último RewriteRule verás un ejemplo de como se escribiría una 
+#  regla si usará el ejemplo mencionado anteriormente. Modificala de
+#  acuerdo a los parametros que necesites, también puedes agregar más
+#  reglas para cada archivo independiente, en este ejemplo la regla es 
+#  solo para el index.php
+
+<IfModule mod_rewrite.c>
+
+    RewriteEngine On
+
+    Options +FollowSymlinks
+
+    # RewriteBase /
+
+    # La siguiente linea redirecciona el index.php a la raíz,
+    # ejemplo: pepito.com/index.php redirecciona a pepito.com 
+    # RewriteRule ^index.php$ "" [R=301,L,QSA]
+
+    # RewriteCond %{REQUEST_FILENAME} -d [OR]
+    # RewriteCond %{REQUEST_FILENAME} -f
+    # RewriteRule . - [L]
+
+    # RewriteRule ^(.*)/(.*)/$ index.php?tipo=$1&categoria=$2 [L,QSA]
+
+</IfModule>
+
+
+
+
+
+
+
+# ---------------------------------------------------------------------*\
+#  BLOQUEAR ACCESO A ARCHIVOS
+# ---------------------------------------------------------------------*/
+
+#  Agrega las extenciones de archivos que quieras proteger.
+
+<FilesMatch "(^#.*#|\.(bak|conf|dist|fla|in[ci]|log|psd|styl|sh|sql|sw[op])|~)$">
+
+    # Apache < 2.3
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+        Satisfy All
+    </IfModule>
+
+    # Apache ≥ 2.3
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+
+</FilesMatch>
+
+
+
+
+
+
+
+# ---------------------------------------------------------------------*\
+#  PROTEGER INFORMACIÓN DEL SERVIDOR
+# ---------------------------------------------------------------------*/
+
+#  Agrega las siguientes directivas en el archivo httpd.conf del
+#  servidor. Esto oculta información acerca de la versión de
+#  Apache y modulos instalados lo cual es útil para un posible atacante.
+#  Si no tienes acceso a este archivo de configuración solicita a tu 
+#  proveedor de hosting modifique estas directivas.
+
+   #  ServerSignature Off
+   #  ServerTokens Prod
+
+
+
+
+
+
+
+# ---------------------------------------------------------------------*\
+#  MEJORAR RENDIMIENTO - COMPRIMIR ARCHIVOS
+# ---------------------------------------------------------------------*/
+
+#  Las siguiente configuración ayuda a comprimir los contenidos de los
+#  archivos especificados lo cual acelera el tiempo de carga. 
+
+<IfModule mod_deflate.c>
+
+    <IfModule mod_setenvif.c>
+        <IfModule mod_headers.c>
+            SetEnvIfNoCase ^(Accept-EncodXng|X-cept-Encoding|X{15}|~{15}|-{15})$ ^((gzip|deflate)\s*,?\s*)+|[X~-]{4,13}$ HAVE_Accept-Encoding
+            RequestHeader append Accept-Encoding "gzip,deflate" env=HAVE_Accept-Encoding
+        </IfModule>
+    </IfModule>
+
+    <IfModule mod_filter.c>
+        AddOutputFilterByType DEFLATE "application/atom+xml" \
+                                      "application/javascript" \
+                                      "application/json" \
+                                      "application/manifest+json" \
+                                      "application/rss+xml" \
+                                      "application/schema+json" \
+                                      "application/vnd.geo+json" \
+                                      "application/vnd.ms-fontobject" \
+                                      "application/x-font-ttf" \
+                                      "application/x-javascript" \
+                                      "application/x-web-app-manifest+json" \
+                                      "application/xhtml+xml" \
+                                      "application/xml" \
+                                      "font/eot" \
+                                      "font/opentype" \
+                                      "image/bmp" \
+                                      "image/svg+xml" \
+                                      "image/vnd.microsoft.icon" \
+                                      "image/x-icon" \
+                                      "text/cache-manifest" \
+                                      "text/css" \
+                                      "text/html" \
+                                      "text/javascript" \
+                                      "text/plain" \
+                                      "text/x-component" \
+                                      "text/xml"
+
+    </IfModule>
+
+    <IfModule mod_mime.c>
+        AddEncoding gzip              svgz
+    </IfModule>
+
+</IfModule>
+
+
+
+
+
+
+
+# ---------------------------------------------------------------------*\
+#  ELIMINAR ETags
+# ---------------------------------------------------------------------*/
+
+#  Las ETags se asignan a cada archivo, y estas comparan si la caché del
+#  archivo en el navegador coincide con la caché del servidor, si
+#  coincide, no descarga el archivo porque ya está almacenado en la caché
+#  del navegador, el problema es que muchas veces no coinciden, lo cual 
+#  hace que se vuelva a descargar el archivo, y por ende nuestro servidor
+#  consume más transferencia de datos, al igual que el usuario tendría
+#  que esperar un poco más de tiempo.
+
+<IfModule mod_headers.c>
+    Header unset ETag
+</IfModule>
+
+FileETag None
+
+
+
+
+
+
+
+# ---------------------------------------------------------------------*\
+#  EXPIRAR CABECERAS
+# ---------------------------------------------------------------------*/
+
+#  La cabecera `Expires` le indica al navegador a partir de que fecha
+#  un recurso (archivo) se considera "No válido" y así volver a
+#  solicitarse al servidor para no servirse directo desde la caché.
+
+#  Esto hace que cuando un usuario vuelva a visitar nuestro sitio Web
+#  el navegador no tenga que descargar de nuevo todos los archivos
+#  estáticos como imágenes, css, js... etc y así nuestra Web cargará
+#  super rápido porque todos los archivos estarán almacenados en la 
+#  caché del navegador del usuario.
+
+#  ¡IMPORTANTE!: Si realizas una actualización como cambiar el logo
+#  del sitio Web, actualizar tu css, js... etc este cambio no se verá 
+#  reflejado de inmediato al usuario ya que el navegador tomará lo que
+#  que está almacenado en la caché, claro a no se que el usuario elimine
+#  la caché del navegador y refresque la página no verá los cambios,
+#  pero como los usuarios no saben en que momento realizamos cambios al
+#  sitio Web entonces la manera de forzar a que se actualice la caché
+#  de un archivo especifico es usar un `parametro` indicando por ejemplo
+#  una versión del archivo, algo así:
+
+#    logo.png?v2
+
+#  De esta manera forzamos al navegador a descargar el archivo de nuevo year
+#  almacenarlo en la caché. Si hicieramos otro cambio entonces ahora sería
+#  logo.png?v3
+
+#  Existe un metodo que hace algo similar a lo explicado anteriormente pero
+#  con mejor rendimiento, y es el que verás en `ELIMINAR CACHÉ DE ARCHIVOS`
+
+<IfModule mod_expires.c>
+
+    ExpiresActive on
+    ExpiresDefault                                      "access plus 1 month"
+
+  # CSS
+
+    ExpiresByType text/css                              "access plus 1 year"
+
+
+  # Intercambio de datos
+
+    ExpiresByType application/atom+xml                  "access plus 1 hour"
+    ExpiresByType application/rdf+xml                   "access plus 1 hour"
+    ExpiresByType application/rss+xml                   "access plus 1 hour"
+
+    ExpiresByType application/json                      "access plus 0 seconds"
+    ExpiresByType application/ld+json                   "access plus 0 seconds"
+    ExpiresByType application/schema+json               "access plus 0 seconds"
+    ExpiresByType application/vnd.geo+json              "access plus 0 seconds"
+    ExpiresByType application/xml                       "access plus 0 seconds"
+    ExpiresByType text/xml                              "access plus 0 seconds"
+
+
+  # Favicon
+
+    ExpiresByType image/vnd.microsoft.icon              "access plus 1 week"
+    ExpiresByType image/x-icon                          "access plus 1 week"
+
+
+  # HTML
+
+    ExpiresByType text/html                             "access plus 0 seconds"
+
+
+  # JavaScript
+
+    ExpiresByType application/javascript                "access plus 1 year"
+    ExpiresByType application/x-javascript              "access plus 1 year"
+    ExpiresByType text/javascript                       "access plus 1 year"
+
+
+  # Archivos multimedia
+
+    ExpiresByType audio/ogg                             "access plus 1 year"
+    ExpiresByType image/bmp                             "access plus 1 year"
+    ExpiresByType image/gif                             "access plus 1 year"
+    ExpiresByType image/jpeg                            "access plus 1 year"
+    ExpiresByType image/png                             "access plus 1 year"
+    ExpiresByType image/svg+xml                         "access plus 1 year"
+    ExpiresByType video/mp4                             "access plus 1 year"
+    ExpiresByType video/ogg                             "access plus 1 year"
+    ExpiresByType video/webm                            "access plus 1 year"
+
+
+  # Fuentes Web
+
+    ExpiresByType application/vnd.ms-fontobject         "access plus 1 year"
+    ExpiresByType font/eot                              "access plus 1 year"
+    ExpiresByType font/opentype                         "access plus 1 year"
+    ExpiresByType application/x-font-ttf                "access plus 1 year"
+    ExpiresByType application/font-woff                 "access plus 1 year"
+    ExpiresByType application/x-font-woff               "access plus 1 year"
+    ExpiresByType font/woff                             "access plus 1 year"
+    ExpiresByType application/font-woff2                "access plus 1 year"
+
+</IfModule>
+
+
+
+
+
+
+
+# ---------------------------------------------------------------------*\
+#  ELIMINAR CACHÉ DE ARCHIVOS
+# ---------------------------------------------------------------------*/
+
+#  Una manerá usada comunmente para eliminar la caché de un archivo es
+#  usando un parametro, y este se indica con el simbolo `?` 
+
+#      `estilos.css?v1.2`
+
+#  Donde `v1.2` lo puedes remplazar por cualquier otra cosa. Esto obliga
+#  al navegador a cargar de nuevo del archivo.
+
+#  Una buena práctica para eliminar la cache es agregando la versión
+#  del archivo antes de la extención, así:
+
+#      `estilos.1.2.css`
+
+#  Donde `estilos.1.2.css` equivale al archivo `estilos.css` y para que
+#  el servidor pueda reconocer esa estructura es necesario incluir la 
+#  directiva que verás acontinuación.
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^(.+)\.(\d+)\.(bmp|css|cur|gif|ico|jpe?g|js|png|svgz?|webp)$ $1.$3 [L]
+</IfModule>
+
+
+
+
+
+
+
+# ---------------------------------------------------------------------*\
+#  HEADER PERSONALIZADO 
+# ---------------------------------------------------------------------*/
+
+#  Puedes agregar un Header personalizado, por ejemplo si quieres que
+#  cuando un desarrollador vea los Headers de tu Web se entere que
+#  ofreces empleo. En este ejemplo he creado el Header `X-Job` pero 
+#  podría ser cualquier nombre Ej.`Trabajo`, es común que los Headers
+#  personalizados empiecen con la `X` seguidos de un guión y las palabras
+#  que quieras.
+
+#  Para activar este Header personalizado solo descomentalo.
+
+# Header set X-Job "Trabaja con nosotros: jeison@nigma.co"
+# Header set X-saludo "Hola, este es mi saludo desde un Header"
+
+

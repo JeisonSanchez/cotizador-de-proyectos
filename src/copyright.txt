@@ -1,0 +1,15 @@
+/**
+ *
+ * @author      <%= pkg.author.name %> <<%= pkg.author.email %>>
+ * @website     <%= pkg.author.url %>
+ * @copyright   <%= year %> <%= pkg.author.name %>
+ *
+ * @frontend-framework
+ * Name        : Nigma Framework
+ * Description : <%= pkg.description %> ♥
+ * Version     : <%= pkg.version %>
+ * Author      : Jeison Sanchez <jeison@nigma.co>
+ * Website     : http://www.nigma.co
+ * License     : MIT
+ *
+ */

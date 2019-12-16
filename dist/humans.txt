@@ -1,0 +1,23 @@
+/* TEAM */
+
+	Cargo        : Nombre
+	Contact      : nombre [at] website.com
+	Social Media : Facebook, Twitter, Linkedin...
+	From         : Ciudad, País
+
+	...
+
+/* THANKS */
+
+	Front-end Framework : Jeison Sánchez de Grupo Nigma
+	Description         : Código pre-horneado listo para mezclar, probar y disfrutar!
+	Website             : http://www.nigma.co
+	Contact             : jeison [at] nigma.co
+	From                : Bucaramanga, Colombia
+
+	...
+
+/* SITE */
+
+    Standards     : HTML5, CSS3, JavaScript
+	Software Used : Atom, Gulp, Git, MAMP PRO, Photoshop, Illustrator
