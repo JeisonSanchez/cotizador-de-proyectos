@@ -147,7 +147,7 @@
 
 			var gastos = new Slider('#gastos', {
 				formatter: function(value) {
-					return 'Sueldo: ' +  numeral(value).format('$0,0');
+					return 'Gastos: ' +  numeral(value).format('$0,0');
 				}
 			});
 
