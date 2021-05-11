@@ -72,9 +72,14 @@
 	var i_gastos = true;
 	var i_sueldo = true;
 
+	var sueldo;
+	var gastos;
+	var moneda;
+
 	var vm = new Vue({
 		el: '#app',
 		data: {
+			moneda: 'COP',
 			sueldo: 2500000,
 			sueldo_paralelo: 2500000,
 			horas_dia: 8,
@@ -118,56 +123,128 @@
 		},
 		mounted: function(){
 
-			pedidoFixed();
+			var ip, ciudad, region, pais;
 
-			var sueldo = new Slider('#sueldo', {
-				formatter: function(value) {
-					return 'Sueldo: ' +  numeral(value).format('$0,0');
-				}
-			});
+			$.get('https://ipinfo.io/json?token=5d44e9a3d3f86f', function( r ){
+				ip = r.ip;
+				ciudad = r.city;
+				region = r.region;
+				pais = r.country;
+			}).done(function(){
 
-			sueldo.on("slide", function(sliderValue) {
-				vm.sueldo_paralelo = sliderValue;
+				pedidoFixed();
 
-				if(i_sueldo){
-					i_sueldo = false;
+				if ( pais == 'CO' ) {
+
+					vm.sueldo = 2500000;
+					vm.sueldo_paralelo = 2500000;
+
 					setTimeout(function(){
+						sueldo = new Slider('#sueldo', {
+							step: 100000,
+							min: 500000,
+							max: 10000000,
+							formatter: function(value) {
+								return 'Sueldo: COP ' +  numeral(value).format('$0,0');
+							}
+						});
 
-						setTimeout(function(){
-							// console.log('movido: ' +  sueldo.getValue());
-							vm.sueldo = sueldo.getValue();
-							i_sueldo = true;
-						},200);
+						gastos = new Slider('#gastos', {
+							step: 50000,
+							min: 0,
+							max: 5000000,
+							formatter: function(value) {
+								return 'Gastos: COP' +  numeral(value).format('$0,0');
+							}
+						});
 
-					}, 100);
+						onSlide();
+
+					},300);
+
+
 				}
+				else {
 
-			});
+					vm.sueldo = 1000;
+					vm.sueldo_paralelo = 1000;
 
+					vm.gastos_mes = 300;
+					vm.gastos_mes_paralelo = 300;
 
-			var gastos = new Slider('#gastos', {
-				formatter: function(value) {
-					return 'Gastos: ' +  numeral(value).format('$0,0');
-				}
-			});
+					vm.moneda = 'USD';
 
-			gastos.on("slide", function(sliderValue) {
-				vm.gastos_mes_paralelo = sliderValue;
-
-				if(i_gastos){
-					i_gastos = false,
 					setTimeout(function(){
+						sueldo = new Slider('#sueldo', {
+							step: 100,
+							min: 400,
+							max: 5000,
+							formatter: function(value) {
+								return 'Sueldo: USD ' +  numeral(value).format('$0,0');
+							}
+						});
 
-						setTimeout(function(){
-							// console.log('movido: ' +  gastos.getValue());
-							vm.gastos_mes = gastos.getValue();
-							i_gastos = true;
-						},200);
+						gastos = new Slider('#gastos', {
+							step: 100,
+							min: 0,
+							max: 3000,
+							formatter: function(value) {
+								return 'Gastos: USD ' +  numeral(value).format('$0,0');
+							}
+						});
 
-					}, 100);
+						onSlide();
+
+					},300);
+
+
 				}
 
+
+				function onSlide(){
+
+					sueldo.on("slide", function(sliderValue) {
+						vm.sueldo_paralelo = sliderValue;
+
+						if(i_sueldo){
+							i_sueldo = false;
+							setTimeout(function(){
+
+								setTimeout(function(){
+									// console.log('movido: ' +  sueldo.getValue());
+									vm.sueldo = sueldo.getValue();
+									i_sueldo = true;
+								},200);
+
+							}, 100);
+						}
+
+					});
+
+					gastos.on("slide", function(sliderValue) {
+						vm.gastos_mes_paralelo = sliderValue;
+
+						if(i_gastos){
+							i_gastos = false,
+							setTimeout(function(){
+
+								setTimeout(function(){
+									// console.log('movido: ' +  gastos.getValue());
+									vm.gastos_mes = gastos.getValue();
+									i_gastos = true;
+								},200);
+
+							}, 100);
+						}
+
+					});
+				}
+
+
+
 			});
+
+
 
 		},
 		beforeUpdate: function(){
@@ -188,7 +265,7 @@
 						numberStep: function(now, tween){
 								target = $(tween.elem);
 								valor = numeral(now).format('$0,0');
-								target.text(valor);
+								target.text(vm.moneda + ' ' + valor);
 						}
 					});
 
@@ -254,8 +331,8 @@
 			}
 		},
 		filters: {
-			money: function(value) {
-				return  numeral(value).format('$0,0');
+			money: function(value, moneda) {
+				return moneda + ' ' + numeral(value).format('$0,0');
 			}
 		}
 	});

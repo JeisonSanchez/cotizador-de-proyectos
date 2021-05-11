@@ -9,7 +9,7 @@ block container
 	section#app.g-container.c-block-1
 		//- .span {{ $data }}
 		header.c-header
-			img.c-header__logo(src="images/logo-nigma.png", alt="Logo Grupo Nigma")
+			img.c-header__logo(src="images/logo-nigbox.png", alt="Logo Nigbox")
 				
 		.c-block-1__container
 			
@@ -20,9 +20,9 @@ block container
 			article.c-block-1__item
 				h2.o-heading-normal-1-2.c-block-1__heading De acuerdo a tus habilidades y años de experiencia ¿Cuánto crees que mereces ganar al mes?
 				
-				input#sueldo(type="number" data-slider-min="500000" data-slider-max="7000000" data-slider-step="100000" :data-slider-value="sueldo")
+				input#sueldo(type="number" :data-slider-value="sueldo")
 				
-				.c-block-1__price {{ sueldo_paralelo | money }}
+				.c-block-1__price {{ sueldo_paralelo | money(moneda) }}
 			
 					
 					
@@ -54,10 +54,10 @@ block container
 				
 				p.c-block-1__text-intro Por ejemplo licencias de software, luz, agua, empanadas 😏, etc...
 				
-				input#gastos(type="number" data-slider-min="0" data-slider-max="5000000" data-slider-step="50000" :data-slider-value="gastos_mes")
+				input#gastos(type="number" :data-slider-value="gastos_mes")
 					
 				
-				.c-block-1__price {{ gastos_mes_paralelo | money }}
+				.c-block-1__price {{ gastos_mes_paralelo | money(moneda) }}
 				
 				
 							
@@ -80,7 +80,7 @@ block container
 							tr(v-for="(actividad, index) in activities")
 								td.padding {{ actividad.nombre }}
 								td.c-table-dark__center {{ actividad.horas }}
-								td.c-table-dark__center {{ actividad.precio | money }}
+								td.c-table-dark__center {{ actividad.precio | money('') }}
 								td.c-table-dark__center: a.icon-bin(href="#." @click="borrarActividad(index, $event)")
 				
 				form(@submit.prevent="agregarActividad")
@@ -98,5 +98,5 @@ block container
 				
 				.c-pedido__costo.icon-wallet(v-if="costo_total")
 					span.c-pedido__text-1 El costo de tu proyecto es
-					.c-pedido__total#costoTotal(:data-valor="costo_total") {{ costo_total | money }}
+					.c-pedido__total#costoTotal(:data-valor="costo_total") {{ costo_total | money(moneda) }}
 					//- .c-pedido__total {{ costo_total }}

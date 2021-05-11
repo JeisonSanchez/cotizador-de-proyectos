@@ -9,13 +9,13 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <link rel="stylesheet" href="https://use.typekit.net/kra1kqk.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.2/css/bootstrap-slider.min.css">
-    <link rel="stylesheet" href="assets/css/global.b9373e41a1.css">
+    <link rel="stylesheet" href="assets/css/global.4fb29e71c5.css">
 </head>
 
 <body>
     <section class="g-container c-block-1" id="app">
         <header class="c-header">
-            <img class="c-header__logo" src="images/logo-nigma.png" alt="Logo Grupo Nigma">
+            <img class="c-header__logo" src="images/logo-nigbox.png" alt="Logo Nigbox">
         </header>
         <div class="c-block-1__container">
             <article class="c-block-1__item--v2">
@@ -24,8 +24,8 @@
             </article>
             <article class="c-block-1__item">
                 <h2 class="o-heading-normal-1-2 c-block-1__heading">De acuerdo a tus habilidades y años de experiencia ¿Cuánto crees que mereces ganar al mes?</h2>
-                <input id="sueldo" type="number" data-slider-min="500000" data-slider-max="7000000" data-slider-step="100000" :data-slider-value="sueldo">
-                <div class="c-block-1__price">{{ sueldo_paralelo | money }}</div>
+                <input id="sueldo" type="number" :data-slider-value="sueldo">
+                <div class="c-block-1__price">{{ sueldo_paralelo | money(moneda) }}</div>
             </article>
             <article class="c-block-1__item">
                 <h2 class="o-heading-normal-1-2 c-block-1__heading">Selecciona los días de la semana que trabajas</h2>
@@ -51,8 +51,8 @@
             <article class="c-block-1__item">
                 <h2 class="o-heading-normal-1-2 c-block-1__heading" style="margin-bottom:10px">¿Cuánto suman tus gastos al mes?</h2>
                 <p class="c-block-1__text-intro">Por ejemplo licencias de software, luz, agua, empanadas 😏, etc...</p>
-                <input id="gastos" type="number" data-slider-min="0" data-slider-max="5000000" data-slider-step="50000" :data-slider-value="gastos_mes">
-                <div class="c-block-1__price">{{ gastos_mes_paralelo | money }}</div>
+                <input id="gastos" type="number" :data-slider-value="gastos_mes">
+                <div class="c-block-1__price">{{ gastos_mes_paralelo | money(moneda) }}</div>
             </article>
         </div>
         <div class="c-block-1__container-2">
@@ -73,7 +73,7 @@
                             <tr v-for="(actividad, index) in activities">
                                 <td class="padding">{{ actividad.nombre }}</td>
                                 <td class="c-table-dark__center">{{ actividad.horas }}</td>
-                                <td class="c-table-dark__center">{{ actividad.precio | money }}</td>
+                                <td class="c-table-dark__center">{{ actividad.precio | money('') }}</td>
                                 <td class="c-table-dark__center">
                                     <a class="icon-bin" href="#." @click="borrarActividad(index, $event)"></a>
                                 </td>
@@ -97,7 +97,7 @@
                     </div>
                 </form>
                 <div class="c-pedido__costo icon-wallet" v-if="costo_total"><span class="c-pedido__text-1">El costo de tu proyecto es</span>
-                    <div class="c-pedido__total" id="costoTotal" :data-valor="costo_total">{{ costo_total | money }}</div>
+                    <div class="c-pedido__total" id="costoTotal" :data-valor="costo_total">{{ costo_total | money(moneda) }}</div>
                 </div>
             </div>
         </div>
@@ -108,7 +108,7 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.2/bootstrap-slider.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/vue.js"></script>
     <!-- Scripts globales -->
-    <script src="assets/js/global.404674002a.js"></script>
+    <script src="assets/js/global.7719ebba46.js"></script>
 </body>
 
 </html>

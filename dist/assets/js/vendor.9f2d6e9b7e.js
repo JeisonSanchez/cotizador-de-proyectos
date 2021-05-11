@@ -2,7 +2,7 @@
  *
  * @author      Jeison Sanchez <jeison@nigma.co>
  * @website     http://www.nigma.co
- * @copyright   2019 Jeison Sanchez
+ * @copyright   2021 Jeison Sanchez
  *
  * @frontend-framework
  * Name        : Nigma Framework
